@@ -19,7 +19,7 @@
 
 	    <p>This simple genetic drift simulator was written for my Mt. SAC Biol 1 class. Other simulators exist, but may be confusing in their complexity.</p>
 
-	    <iframe src="https://senanu.shinyapps.io/GeneticDrift/" style="border: none; width: 900px; height: 500px"></iframe>
+	    <iframe src="https://senanu.shinyapps.io/GeneticDrift/" style="border: none; width: 1000px; height: 800px"></iframe>
 
       <footer class="site-footer">
 
