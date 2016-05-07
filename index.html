@@ -2,7 +2,7 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-    <title>Senanu's Genetic Drift simulator</title>
+    <title>Genetic Drift simulator</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
@@ -11,17 +11,29 @@
   </head>
   <body>
     <section class="page-header">
-      <h1 class="project-name">Senanu's Genetic Drift Simulator</h1>
+      <h1 class="project-name">Genetic Drift Simulator</h1>
       <h2 class="project-tagline"></h2>
     </section>
 
     <section class="main-content">
 
-	    <p>This simple genetic drift simulator was written for my Mt. SAC Biol 1 class. Other simulators exist, but may be confusing in their complexity.</p>
+	    <p>This simple genetic drift simulator was written for my Mt. SAC Biol 1 class. Other simulators exist, but may be confusing in their complexity. Please see the notes below the simulation.</p>
 
 	    <iframe src="https://senanu.shinyapps.io/GeneticDrift/" style="border: none; width: 1000px; height: 800px"></iframe>
 
-
+	    <h3>A few notes</h3>
+	    <p>Genetic drift will tend to increase or decrease the frequency of the A1 allele randomly and will be stronger when populations are small. Therefore, for small populations, the speed at which one of the alleles is fixed will be rapid. It may take a long time for either allele to be fixed in large populations.</p>
+	    <p>Natural selection will tend to favor one allele or the other (depending on how you set the relative fitness values). Large populations will tend to follow the expected trajectory (dark black line) since drift will be weak. However, in small populations, drift is strong and may result in either of the alleles being fixed, despite one of them having a selective advantage.</p>
+	    <p>Change the relative fitness values to simulate natural selection. The following is a guide:</p>
+	    <ul>
+		    <li>Relative fitness values should always be between 0 and 1 and usually close to 1. 0.9 is a nice value and indicates that a genotype is expected to only have 90% of the offspring that other genotypes (with relative fitness = 1) have.</li>
+		    <li>A genotype that has a fitness value less than one is selected against.</li>
+		    <li>If the heterozygote has a fitness that is the same as the A1 homozygote, then A1 is dominant and A2 is recessive.</li>
+		    <li>You can simulate the introduction of a beneficial allele by choosing an initial frequency of A1 to be very small (0.01). Be aware that often, drift will rapidly eliminate it from the population, but you can investigate the expected trajectory using the dark black line (infinite population size).</li>
+		    <li>If the heterozygote has the same high fitness as the beneficial allele gives to the homozygote (i.e. the new, beneficial allele is dominant), then we can expect that the frequency will increase relatively quickly since the relatively common heterozygotes will benefit from selection. However, if the heterozygote has the lower fitness (i.e. the new, beneficial allele is recessive), then we expect the frequency to increase <em>very</em> slowly until the homozygotes become common in the population. </li>
+	    </ul>
+			    
+			  
 
     </section>
 
