@@ -366,6 +366,7 @@
 			document.getElementById("val_A1_fixed").innerHTML = num_fixed[0];
 			document.getElementById("val_neither_fixed").innerHTML = num_fixed[1];
 			document.getElementById("val_A2_fixed").innerHTML = num_fixed[2];
+			document.getElementById("val_either_fixed").innerHTML = num_fixed[0] + num_fixed[2];
 			document.getElementById("fixation_time").innerHTML = ave_fix_time;
 
 			console.log(num_fixed);
@@ -618,6 +619,15 @@
 					<div id="val_A1_fixed" class="val">
 					</div>
 				</p>
+
+				<p>
+					<div id="res3" class="res">
+						# Populations fixed for allele A<sub>2</sub>:
+					</div>
+					<div id="val_A2_fixed" class="val">
+					</div>
+				</p>
+				<hr style="height:5px;color:#000000">
 				<p>
 					<div id="res2" class="res">
 						# Populations polymorphic:
@@ -626,12 +636,14 @@
 					</div>
 				</p>
 				<p>
-					<div id="res3" class="res">
-						# Populations fixed for allele A<sub>2</sub>:
+					<div id="res5" class="res">
+						# Populations fixed for either allele:
 					</div>
-					<div id="val_A2_fixed" class="val">
+					<div id="val_either_fixed" class="val">
 					</div>
 				</p>
+				<hr style="height:5px;color:#000000">
+
 				<p>
 					<div id="res4" class="res">
 						Average time to fixation:
