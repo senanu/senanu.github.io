@@ -1,391 +1,720 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-<meta charset="utf-8">
-<style>
+	<meta charset="utf-8">
+	<style>
+		/** tooltip styles **/
 
-.chart div {
-	font: 10px sans-serif;
-	background-color: steelblue;
-	text-align: right;
-	padding: 3px;
-	margin: 1px;
-	color: white;
-}
-h3 {font-weight: bold;
-    color: black;
-    font-size: 24;}
-form { display: table;
-    font-family: Tahoma, Geneva, sans-serif;
-    color: #0033cc;
-    font-weight: bold;
-    border-radius: 10px;
-    padding: 5px;
-    border: 1px solid #999;
-    border: inset 1px solid #333;
-    background: -webkit-linear-gradient(bottom, #999999, #EEEEEE 175px);
-    background: -moz-linear-gradient(bottom, #999999, #EEEEEE 175px);
-    background: linear-gradient(bottom, #999999, #EEEEEE 175px);
-}
-#outer {display: table;
-border: 1px solid #999}
-#inner {display: table-cell;}
-p    { display: table-row; }
-label{ display: table-cell;}
-input{ display: table-cell;
-    height: 25px;
-    border: 1px solid #999;
-    -webkit-box-shadow: 0px 0px 8px rgba(, 0, 0, 0.6);
-    -moz-box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6);
-    box-shadow: 0px 0px 8px rgba(0, 0, 0, 0.6);
-}
-#pars_results { display: table;}
-#row {display: table-row;}
-#input_div {display: table-cell;}
-#res_div {display: table-cell;}
-.val{display: table-cell;
-	color: black
-}
-canvas{
-	max-height: 400px;
-	border: 1px solid #000000;
-}
-div{padding:10px}
+		div.warning {
+			min-width: 10px;
+			min-height: 30px;
+			background-color: #ff3300;
+			text-align: center;
+			line-height: 30px;
+			color: yellow;
+			padding: 1px;
+			-moz-border-radius: 0.5em;
+			-webkit-border-radius: 0.5em;
+			border-radius: 0.5em;
+		}
 
-.myButton {
-	-moz-box-shadow:inset 0px 1px 0px 0px #97c4fe;
-	-webkit-box-shadow:inset 0px 1px 0px 0px #97c4fe;
-	box-shadow:inset 0px 1px 0px 0px #97c4fe;
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0));
-	background:-moz-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
-	background:-webkit-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
-	background:-o-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
-	background:-ms-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
-	background:linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0',GradientType=0);
-	background-color:#3d94f6;
-	-moz-border-radius:6px;
-	-webkit-border-radius:6px;
-	border-radius:6px;
-	border:1px solid #337fed;
-	cursor:pointer;
-	color:#ffffff;
-	font-family:Arial;
-	font-size:14px;
-	font-weight:bold;
-	padding:24px 12px;
-	padding-bottom: 200px;
-	text-decoration:none;
-	text-shadow:0px 1px 0px #1570cd;
-}
-.myButton:hover {
-	background:-webkit-gradient(linear, left top, left bottom, color-stop(0.05, #1e62d0), color-stop(1, #3d94f6));
-	background:-moz-linear-gradient(top, #1e62d0 5%, #3d94f6 100%);
-	background:-webkit-linear-gradient(top, #1e62d0 5%, #3d94f6 100%);
-	background:-o-linear-gradient(top, #1e62d0 5%, #3d94f6 100%);
-	background:-ms-linear-gradient(top, #1e62d0 5%, #3d94f6 100%);
-	background:linear-gradient(to bottom, #1e62d0 5%, #3d94f6 100%);
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr='#1e62d0', endColorstr='#3d94f6',GradientType=0);
-	background-color:#1e62d0;
-}
-.myButton:active {
-	position:relative;
-	top:1px;
-}
+		div.preset_tt {
+			display: inline;
+			white-space: nowrap;
+			min-width: 20px;
+			max-width: 50px;
+			min-height: 5px;
+			background-color: green;
+			text-align: center;
+			line-height: 15px;
+			color: yellow;
+			padding: 2px;
+			-moz-border-radius: 0.5em;
+			-webkit-border-radius: 0.5em;
+			border-radius: 0.5em;
+		}
 
-</style>
+
+		div.help {
+			text-align: center;
+			line-height: 50px;
+			color: white;
+			padding: 10px;
+			-moz-border-radius: 0.5em;
+			-webkit-border-radius: 0.5em;
+			border-radius: 0.5em;
+			-moz-box-shadow: inset 0px 1px 0px 0px #97c4fe;
+			-webkit-box-shadow: inset 0px 1px 0px 0px #97c4fe;
+			box-shadow: inset 0px 1px 0px 0px #97c4fe;
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0));
+			background: -moz-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
+			background: -webkit-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
+			background: -o-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
+			background: -ms-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
+			background: linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);
+		}
+
+		.chart div {
+			font: 10px sans-serif;
+			background-color: steelblue;
+			text-align: right;
+			padding: 3px;
+			margin: 1px;
+			color: white;
+		}
+
+		h3 {
+			font-weight: bold;
+			color: black;
+			font-size: 24;
+		}
+
+		.block {
+			font-family: Tahoma, Geneva, sans-serif;
+			color: #0033cc;
+			font-weight: bold;
+			border-radius: 10px;
+			padding: 5px;
+			border: 1px solid #999;
+			border: inset 1px solid #333;
+			background: -webkit-linear-gradient(bottom, #999999, #EEEEEE 175px);
+			background: -moz-linear-gradient(bottom, #999999, #EEEEEE 175px);
+			background: linear-gradient(bottom, #999999, #EEEEEE 175px);
+		}
+
+		form{
+			display: table;
+		}
+
+		#outer {
+			display: table;
+		}
+		/*border: 1px solid #999}*/
+
+		#inner {
+			display: table-cell;
+		}
+
+		p {
+			display: table-row;
+		}
+
+		label {
+			display: table-cell;
+			white-space: nowrap;
+		}
+
+		input {
+			display: table-cell;
+			height: 25px;
+			border: 1px solid #999;
+		}
+
+
+		#pars_results {
+			display: table;
+		}
+
+		#row {
+			display: table-row;
+		}
+
+		#input_div {
+			display: table-cell;
+		}
+
+		#res_div {
+			display: table-cell;
+		}
+
+
+		.val {
+			display: table-cell;
+			color: black
+		}
+
+		canvas {
+			max-height: 400px;
+			border: 1px solid #000000;
+		}
+
+		div {
+			padding: 5px
+		}
+
+		.myButton {
+			-moz-box-shadow: inset 0px 1px 0px 0px #97c4fe;
+			-webkit-box-shadow: inset 0px 1px 0px 0px #97c4fe;
+			box-shadow: inset 0px 1px 0px 0px #97c4fe;
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #3d94f6), color-stop(1, #1e62d0));
+			background: -moz-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
+			background: -webkit-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
+			background: -o-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
+			background: -ms-linear-gradient(top, #3d94f6 5%, #1e62d0 100%);
+			background: linear-gradient(to bottom, #3d94f6 5%, #1e62d0 100%);
+			filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#3d94f6', endColorstr='#1e62d0', GradientType=0);
+			background-color: #3d94f6;
+			-moz-border-radius: 6px;
+			-webkit-border-radius: 6px;
+			border-radius: 6px;
+			border: 1px solid #337fed;
+			cursor: pointer;
+			color: #ffffff;
+			font-family: Arial;
+			font-size: 14px;
+			font-weight: bold;
+			padding: 24px 12px;
+			padding-bottom: 100%;
+			text-decoration: none;
+			text-shadow: 0px 1px 0px #1570cd;
+		}
+
+		.myButton:hover {
+			background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #1e62d0), color-stop(1, #3d94f6));
+			background: -moz-linear-gradient(top, #1e62d0 5%, #3d94f6 100%);
+			background: -webkit-linear-gradient(top, #1e62d0 5%, #3d94f6 100%);
+			background: -o-linear-gradient(top, #1e62d0 5%, #3d94f6 100%);
+			background: -ms-linear-gradient(top, #1e62d0 5%, #3d94f6 100%);
+			background: linear-gradient(to bottom, #1e62d0 5%, #3d94f6 100%);
+			filter: progid: DXImageTransform.Microsoft.gradient(startColorstr='#1e62d0', endColorstr='#3d94f6', GradientType=0);
+			background-color: #1e62d0;
+		}
+
+		.myButton:active {
+			position: relative;
+			top: 1px;
+		}
+	</style>
+
+
+
+	<!-- <script src="http://d3js.org/d3.v3.min.js"></script> -->
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.min.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.4.1/math.js"></script>
+	<!-- <script src="https://code.jquery.com/jquery-3.1.0.min.js"></script> -->
+	<script type="text/javascript" src="http://code.jquery.com/jquery.min.js"></script>
+
+	<script src="http://chancejs.com/chance.min.js"></script>
+	<link rel="stylesheet" href="css/jquery.tooltip/jquery.tooltip.css" type="text/css" />
+	<script type="text/javascript" src="js/jquery.tooltip.min.js"></script>
+
+
+	<script type="text/javascript">
+		$(document).ready(function() {
+			$("div.warning").tooltip().css({
+				opacity: 1
+			});
+			$("div.help").tooltip().css({
+				opacity: 1
+			});
+			$("div.preset_tt").tooltip().css({
+				opacity: 1
+			});
+		});
+	</script>
 </head>
 
-<script src="http://d3js.org/d3.v3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/mathjs/3.4.1/math.js"></script>
-<script src="https://code.jquery.com/jquery-3.1.0.min.js"></script>
-<script src="http://chancejs.com/chance.min.js"></script>
-<script>
-function selection (p,fit_hom_p, fit_het, fit_hom_q){
-    var q = 1-p;
-    var freqs = [p*p, (2*p)*q, q*q];
-    var fitness = [fit_hom_p, fit_het, fit_hom_q];
-    var next_gen = math.dotMultiply(freqs, fitness);
-    var tot_next_gen = math.sum(next_gen);
-    var freq_next_gen = math.dotDivide(next_gen, tot_next_gen);
-    var p_next = freq_next_gen[0] + (freq_next_gen[1] / 2);
-    return(p_next);
-}
-function drift(p,N){
-    var arr = [];
-    for (i=0; i<(2*N); i++){
-        arr[i] = chance.weighted([0,1], [1-p, p]);
-    }
-    var p_next = math.mean(arr);
-    return(p_next);
-}
-function sim(p_orig, gens, N, fit_hom_p, fit_het, fit_hom_q, use_drift){
-	var p = [];
-	var i = 0;
-	var fixtime = gens;
-	p[i] = p_orig;
-	for (i = 1; i <= gens; i++){
-		var post_drift = p[i-1];
-		if(use_drift){
-			post_drift = drift(p[i-1], N);
+<body>
+	<script>
+		// $(".warning").tooltip();
+		function selection(p, fit_hom_p, fit_het, fit_hom_q) {
+			var q = 1 - p;
+			var freqs = [p * p, (2 * p) * q, q * q];
+			var fitness = [fit_hom_p, fit_het, fit_hom_q];
+			var next_gen = math.dotMultiply(freqs, fitness);
+			var tot_next_gen = math.sum(next_gen);
+			var freq_next_gen = math.dotDivide(next_gen, tot_next_gen);
+			var p_next = freq_next_gen[0] + (freq_next_gen[1] / 2);
+			return (p_next);
 		}
-		p[i] = selection(post_drift, fit_hom_p, fit_het, fit_hom_q);
-		if(p[i] !== 0 && p[i] !== 1){
-			fixtime = i;
-		}
-	}
-	return {p: p,
-		time_to_fixation: fixtime};
-};
-function getLineColor(lineNum){
-    var colors = [
-        'rgba(106,61,154,1)',
-        'rgba(227,26,28,1)',
-        'rgba(31,120,180,1)',
-        'rgba(178,223,138,1)',
-        'rgba(51,160,44,1)',
-        'rgba(251,154,153,1)',
-        'rgba(253,191,111,1)',
-        'rgba(255,127,0,1)',
-        'rgba(166,206,227,1)',
-        'rgba(202,178,214,1)',
-        'rgba(255,255,153,1)',
-        'rgba(177,89,40,1)',
-    ];
-    return colors[lineNum - 1];
-}
-function calculateNumFixed(myArray){
-	var fixed = 0;
-	var lost = 0;
-	var polymorphic = 0;
-	for (var i = 0; i < myArray.length; i++){
-		if(myArray[i] === 1){
-			fixed++;
-		} else if (myArray[i] === 0){
-			lost++;
-		} else {
-			polymorphic++;
-		}
-	}
-	return [fixed, polymorphic, lost];
-}
-function calculateAverageFixationTime(myArray){
-	var tot = 0;
-	for ( i = 0; i<myArray.length; i++){
-		if(myArray[i] !== 0 && myArray[i] !== 1){
-			tot = tot + myArray[i];
-		}
-	}
-	console.log({tot: tot,
-		length: myArray.length,
-		array: myArray});
-	return Math.round(tot / myArray.length);
-}
-function getValues(){
-    var gen_element = document.getElementById("in_gens");
-    var gens = Number(gen_element.value);
-    var freq_element = document.getElementById("in_freq");
-    var freq = Number(freq_element.value);
-    var N_element = document.getElementById("in_N");
-    var N = Number(N_element.value);
-    var sims_element = document.getElementById("in_sims");
-    var sims = Number(sims_element.value);
-    var p2_element = document.getElementById("p2_fit");
-    var p2_fit = Number(p2_element.value);
-    var pq_element = document.getElementById("pq_fit");
-    var pq_fit = Number(pq_element.value);
-    var q2_element = document.getElementById("q2_fit");
-    var q2_fit = Number(q2_element.value);
-    var datx = generateXAxis(gens);
 
-    prop.data.datasets.length = 0;
-		// Generate a line for expected values without drift
-		prop.data.datasets.push({
+		function drift(p, N) {
+			var arr = [];
+			for (i = 0; i < (2 * N); i++) {
+				arr[i] = chance.weighted([0, 1], [1 - p, p]);
+			}
+			var p_next = math.mean(arr);
+			return (p_next);
+		}
+
+		function sim(p_orig, gens, N, fit_hom_p, fit_het, fit_hom_q, use_drift) {
+			var p = [];
+			var i = 0;
+			var fixtime = gens;
+			p[i] = p_orig;
+			for (i = 1; i <= gens; i++) {
+				var post_drift = p[i - 1];
+				if (use_drift) {
+					post_drift = drift(p[i - 1], N);
+				}
+				p[i] = selection(post_drift, fit_hom_p, fit_het, fit_hom_q);
+				if (p[i] !== 0 && p[i] !== 1) {
+					fixtime = i;
+				}
+			}
+			return {
+				p: p,
+				time_to_fixation: fixtime
+			};
+		};
+
+		function getLineColor(lineNum) {
+			var colors = [
+				'rgba(106,61,154,1)',
+				'rgba(227,26,28,1)',
+				'rgba(31,120,180,1)',
+				'rgba(178,223,138,1)',
+				'rgba(51,160,44,1)',
+				'rgba(251,154,153,1)',
+				'rgba(253,191,111,1)',
+				'rgba(255,127,0,1)',
+				'rgba(166,206,227,1)',
+				'rgba(202,178,214,1)',
+				'rgba(255,255,153,1)',
+				'rgba(177,89,40,1)',
+			];
+			return colors[lineNum - 1];
+		}
+
+		function calculateNumFixed(myArray) {
+			var fixed = 0;
+			var lost = 0;
+			var polymorphic = 0;
+			for (var i = 0; i < myArray.length; i++) {
+				if (myArray[i] === 1) {
+					fixed++;
+				} else if (myArray[i] === 0) {
+					lost++;
+				} else {
+					polymorphic++;
+				}
+			}
+			return [fixed, polymorphic, lost];
+		}
+
+		function calculateAverageFixationTime(myArray) {
+			var tot = 0;
+			for (i = 0; i < myArray.length; i++) {
+				if (myArray[i] !== 0 && myArray[i] !== 1) {
+					tot = tot + myArray[i];
+				}
+			}
+			console.log({
+				tot: tot,
+				length: myArray.length,
+				array: myArray
+			});
+			if (myArray.length === 0) {
+				return "N/A";
+			}
+			return Math.round(tot / myArray.length);
+		}
+
+		function getValues() {
+			var gen_element = document.getElementById("in_gens");
+			var gens = Number(gen_element.value);
+			var freq_element = document.getElementById("in_freq");
+			var freq = Number(freq_element.value);
+			var N_element = document.getElementById("in_N");
+			var N = Number(N_element.value);
+			var sims_element = document.getElementById("in_sims");
+			var sims = Number(sims_element.value);
+			var p2_element = document.getElementById("p2_fit");
+			var p2_fit = Number(p2_element.value);
+			var pq_element = document.getElementById("pq_fit");
+			var pq_fit = Number(pq_element.value);
+			var q2_element = document.getElementById("q2_fit");
+			var q2_fit = Number(q2_element.value);
+			var datx = generateXAxis(gens);
+
+			if ((gens * sims * N) > 10000000) {
+				if (confirm("This set of Generations, Population Size, and # Simulations will take a long time. Click OK to run the simulations anyway") == true) {
+					// Pressed OK, just continue
+				} else {
+					// Pressed Cancel. Abort
+					return;
+				}
+			}
+			prop.data.datasets.length = 0;
+			// Generate a line for expected values without drift
+			prop.data.datasets.push({
 				data: sim(freq, gens, N, p2_fit, pq_fit, q2_fit, false).p,
 				borderColor: 'black',
 				fill: 0
-		})
-		prop.data.labels = datx;
+			})
+			prop.data.labels = datx;
 
-		// Calculate statistics
-		var last_gens = [];
-		var fix_times = [];
-    for (var j = 0; j < sims; j++){
-			var dat = sim(freq, gens, N, p2_fit, pq_fit, q2_fit, true);
-			last_gens.push(dat.p[gens]);
-			fix_times.push(dat.time_to_fixation);
-			prop.data.datasets.push({
-				data: dat.p,
-				borderColor: getLineColor((j % 12)+1),
-				borderWidth: 1.5,
-				fill: 0
-			});
+			// Calculate statistics
+			var last_gens = [];
+			var fix_times = [];
+			for (var j = 0; j < sims; j++) {
+				var dat = sim(freq, gens, N, p2_fit, pq_fit, q2_fit, true);
+				last_gens.push(dat.p[gens]);
+				fix_times.push(dat.time_to_fixation);
+				prop.data.datasets.push({
+					data: dat.p,
+					borderColor: getLineColor((j % 12) + 1),
+					borderWidth: 1.5,
+					fill: 0
+				});
+			}
+			var num_fixed = calculateNumFixed(last_gens);
+			var ave_fix_time = calculateAverageFixationTime(fix_times);
+
+			//Display statistics in Results box
+			document.getElementById("val_A1_fixed").innerHTML = num_fixed[0];
+			document.getElementById("val_neither_fixed").innerHTML = num_fixed[1];
+			document.getElementById("val_A2_fixed").innerHTML = num_fixed[2];
+			document.getElementById("fixation_time").innerHTML = ave_fix_time;
+
+			console.log(num_fixed);
+			if (num_fixed[1] === 0) {
+				$('#warn_fixTime').hide();
+			} else {
+				$('#warn_fixTime').show();
+			};
+			myChart.update();
+			return;
 		}
-		var num_fixed = calculateNumFixed(last_gens);
-		var ave_fix_time = calculateAverageFixationTime(fix_times);
 
-		//Display statistics in Results box
-		document.getElementById("val_A1_fixed").innerHTML = num_fixed[0];
-		document.getElementById("val_A1A2_fixed").innerHTML = num_fixed[1];
-		document.getElementById("val_A2_fixed").innerHTML = num_fixed[2];
-		document.getElementById("fixation_time").innerHTML = ave_fix_time;
+		function generateXAxis(gens) {
+			var datx = [];
+			for (i = 0; i < gens + 1; i++) {
+				datx[i] = i;
+			}
+			return datx;
+		}
 
-    myChart.update();
-    return;
-}
-function generateXAxis(gens){
-    var datx = [];
-    for (i=0; i<gens+1; i++){
-        datx[i] = i;
-    }
-    return datx;
-}
+		$(document).ready(function() {
+			$("input[name='presets']").on('change', function() {
+				if (this.value === 'default') {
+					setPreset(20, 0.5, 100, 4, 1, 1, 1);
+				} else if (this.value === 'recessive') {
+					setPreset(3000, 0.01, 100, 10, 1, 0.95, 0.95);
+				} else if (this.value === 'dominant') {
+					setPreset(1000, 0.01, 100, 10, 1, 1, 0.95);
+				} else if (this.value === 'sickle') {
+					setPreset(40, 0.1, 100, 10, 0.8, 1, 0.2);
+				}
+				getValues();
+			});
+		});
+
+		function setPreset(gens, start_freq, pop_size, sims, p2_fit, pq_fit, q2_fit) {
+			$('input[id="in_gens"]').val(gens);
+			$('input[id="in_freq"]').val(start_freq);
+			$('input[id="in_N"]').val(pop_size);
+			$('input[id="in_sims"]').val(sims);
+			$('input[id="p2_fit"]').val(p2_fit);
+			$('input[id="pq_fit"]').val(pq_fit);
+			$('input[id="q2_fit"]').val(q2_fit);
+			return;
+		}
+	</script>
+
+	<h2> Genetic drift and Selection</h2>
+	<div id="graph" name="graph">
+		<canvas id="myCanvas" width="400" height="300"></canvas>
+	</div>
+
+	<div id="outer">
+		<div id="inner">
+			<div id="inputDiv" name="inputDiv">
+				<div class="block">
+				<h3> Parameters:</h3>
+				<form>
+					<p>
+						<label for="in_gens"> Generations </label>
+						<input type="text" id="in_gens" value=20>
+					</p>
+					<p>
+						<label for="in_freq"> Starting Frequency of allele A<sub>1</sub></label>
+						<input type="text" id="in_freq" value=0.5>
+					</p>
+					<p>
+						<label for="in_N"> Population Size </label>
+						<input type="text" id="in_N" value=100>
+					</p>
+					<p>
+						<label for="in_sims"> # Simulations </label>
+						<input type="text" id="in_sims" value=3>
+					</p>
+					<p>
+						<label for="p2_fit">Fitness of A<sub>1</sub>A<sub>1</sub> homozygotes </label>
+						<input type="text" id="p2_fit" value=1>
+					</p>
+					<p>
+						<label for="pq_fit"> Fitness of A<sub>1</sub>A<sub>2</sub> heterozygotes </label>
+						<input type="text" id="pq_fit" value=1>
+					</p>
+					<p>
+						<label for="q2_fit">Fitness of A<sub>2</sub>A<sub>2</sub> homozygotes </label>
+						<input type="text" id="q2_fit" value=1>
+					</p>
+				</form>
+			</div>
+				<div class=block>
+				<h3> Preset simulations:</h3>
+				<form>
+					<p>
+						<div id="preset_tt_default" for="preset1" class="preset_tt tooltipright">?
+							<div class="tooltip_description" style="display:none" title="Default Simulations">
+								In this simulation there is no selection. Any allele changes you see are only due to genetic drift.
+								<ul>
+									<li>
+										Try making the simulation run for more generations. What eventually happens to each population?
+									</li>
+									<li>
+										Try changing the population size to investigate the relationship between population size and time to fixation.
+									</li>
+									<li>Try running many simulations for 1000 generations, How many of the populations lose allele A<sub>1</sub>? How many become 'fixed' for allele A<sub>1</sub>?
+									</li>
+									<li>
+										How does this change if you change the starting frequency of allele A<sub>1</sub>?
+									</li>
+								</ul>
+							</div>
+						</div>
+						<label for="preset1">
+							<input type="radio" id="preset1" name="presets" value="default" checked>
+							<span class="radio_labels">Default</span>
+						</label>
 
 
+				</p>
 
-</script>
 
-<!-- Provide spaces for values and get them from user -->
-<div id="graph" name="graph">
-	<canvas id="myCanvas" width="400" height="300"></canvas>
-</div>
-<div id="outer">
-	<div id="inner">
-		<div id="inputDiv" name="inputDiv">
-			<form>
-				<h3> Parameters:
-				</h3>
 				<p>
-					<label for="in_gens"> Generations </label>
-					<input type="text" id="in_gens" value = 20>
+					<div id="preset_tt_default" for="preset1" class="preset_tt tooltipright">?
+						<div class="tooltip_description" style="display:none" title="New allele is recessive">
+							In this simulation the new, beneficial allele (A<sub>1</sub>) is recessive (the heterozygote
+							has a fitness equal to the A<sub>2</sub>A<sub>2</sub> homozygote)
+							<ul>
+								<li>
+									What usually happens to a new rare allele via genetic drift,
+									even if it is beneficial?
+								</li>
+								<li>
+									Why does the allele take so long to be fixed? Consider that the
+									benefits of the beneficial allele is only felt by the homozygotes,
+									and these are very rare when the frequency of the new allele is low.
+								</li>
+								<li>Once the allele becomes common enough to be regularly seen in
+									homozygotes, it quickly becomes fixed.
+								</li>
+							</ul>
+						</div>
+					</div>
+					<label for="preset2">
+						<input type="radio" id="preset2" name="presets" value="recessive">
+						<span class="radio_labels">New allele is Recessive</span>
+					</label>
 				</p>
 				<p>
-					<label for="in_freq"> Starting Frequency of allele A<sub>1</sub></label>
-					<input type="text" id="in_freq" value = 0.5>
+					<div id="preset_tt_default" for="preset1" class="preset_tt tooltipright">?
+						<div class="tooltip_description" style="display:none" title="New allele is dominant">
+							In this simulation the new, beneficial allele (A<sub>1</sub> is dominant (the heterozygote's
+							fitness is the same as the A<sub>1</sub>A<sub>1</sub> homozygote).
+							<ul>
+								<li>
+									The allele frequency becomes fixed for the beneficial allele very quickly.
+								</li>
+								<li>
+									The old ('bad') allele (A<sub>2</sub>) stays in the population for a long time.
+									The old allele is only selected against when it is in homozygotes,
+									and these are very rare when the frequency of A<sub>2</sub> is low.
+								</li>
+								<li>
+									Alleles that cause disease can persist in the population even
+									though selection is against them.
+								</li>
+							</ul>
+						</div>
+					</div>
+					<label for="preset3">
+						<input type="radio" id="preset3" name="presets" value="dominant">
+						<span class="radio_labels">New allele is Dominant</span>
+					</label>
 				</p>
 				<p>
-					<label for="in_N"> Population Size </label>
-					<input type="text" id="in_N" value = 100>
-				</p>
-				<p>
-					<label for="in_sims"> # Simulations </label>
-					<input type="text" id="in_sims" value = 3>
-				</p>
-				<p>
-					<label for="p2_fit">Fitness of A<sub>1</sub>A<sub>1</sub> homozygotes </label>
-					<input type="text" id="p2_fit" value = 1>
-				</p>
-				<p>
-					<label for="pq_fit"> Fitness of A<sub>1</sub>A<sub>2</sub> heterozygotes </label>
-					<input type="text" id="pq_fit" value = 1>
-				</p>
-				<p>
-					<label for="q2_fit">Fitness of A<sub>2</sub>A<sub>2</sub> homozygotes </label>
-					<input type="text" id="q2_fit" value = 1>
+					<div id="preset_tt_default" for="preset1" class="preset_tt tooltipright">?
+						<div class="tooltip_description" style="display:none" title="Sickle Cell Anemia (heterozygote advantage)">
+							In this simulation the heterozygote is the most fit. An example of this is sickle cell anemia:
+							<ul>
+								<li>
+									A<sub>1</sub>A<sub>1</sub> (often called 'AA') homozygotes are more susceptible to
+									malaria than the heterozygotes. (A<sub>1</sub>A<sub>2</sub> heterozygotes
+									have some immunity to malaria)
+								</li>
+								<li>
+									A<sub>2</sub>A<sub>2</sub> (often called 'SS') homozygotes usually die before they
+									can reproduce.
+								</li>
+								<li>Try changing the starting frequency of Allele A<sub>1</sub>.
+									What happens over many generations?
+								</li>
+								<li>
+									Imagine a population that moves to a region with no malaria (such
+									as African populations moving to the United States). When there is no
+									malaria, the A<sub>1</sub>A<sub>1</sub> homozygotes no longer
+									die of malaria and the heterozygotes no longer have an advantage.
+									What will happen to the allele? (adjust the fitness of the A<sub>1</sub>A<sub>1</sub>
+									homozygote to '1').
+								</li>
+							</ul>
+						</div>
+					</div>
+					<label for="preset4">
+						<input type="radio" id="preset4" name="presets" value="sickle">
+						<span class="radio_labels">Sickle cell (Heterozygote advantage)</span>
+					</label>
 				</p>
 			</form>
 		</div>
+
+		</div>
 	</div>
+
+
 	<div id="inner">
-		<input type="button" class="myButton" id="in_button" onClick="getValues()" value= "Click to start">
+		<input type="button" class="myButton" id="in_button" onClick="getValues()" value="Click to start">
+		<div id="help_tooltip" , class="help tooltiptop">
+			Hints & Help
+			<div class="tooltip_description" style="display:none" title="Help">
+				Hints:
+				<ul>
+					<li>
+						The dark black line is the expected allele frequency when there is an infinitely large population (ie. with NO drift).
+						<li>
+							If you want to see the expected allele frequency with no Genetic Drift, enter '0' for the # of simulations.
+						</li>
+						<li>
+							Try the preset simulations to model the introduction of a new dominant allele, a new recessive allele, and heterozygote advantage in sickle-cell anemia.
+						</li>
+				</ul>
+				For best results:
+				<ul>
+					<li>
+						Select a combination of # Generations, Population Size, and # Simulations so that if multiplied together, they total less than 10,000,000. Longer, larger simulations will take more time.
+					</li>
+					<li>
+						If a simulation runs too long, you may need to close the browser tab and start again.
+					</li>
+				</ul>
+			</div>
+		</div>
+
 	</div>
 	<div id="inner">
 		<div id="results" name="results">
-	<form>
-		<h3>
-			Results:
-		</h3>
-		<p>
-			<div id="res1" class="res">
-				# Populations fixed for allele A<sub>1</sub>:
-			</div>
-			<div id="val_A1_fixed" class="val">
-			</div>
-		</p>
-		<p>
-			<div id="res2" class="res">
-				# Populations polymorphic:
-			</div>
-			<div id="val_A1A2_fixed" class="val">
-			</div>
-		</p>
-		<p>
-			<div id="res3" class="res">
-				# Populations fixed for allele A<sub>2</sub>:
-			</div>
-			<div id="val_A2_fixed" class="val">
-			</div>
-		</p>
-		<p>
-			<div id="res4" class="res">
-				Average time to fixation:
-			</div>
-			<div id="fixation_time" class="val">
-			</div>
-		</p>
-	</form>
-</div>
-</div>
-</div>
+			<div class="block">
+			<form>
+				<h3>Results:</h3>
+				<p>
+					<div id="res1" class="res">
+						# Populations fixed for allele A<sub>1</sub>:
+					</div>
+					<div id="val_A1_fixed" class="val">
+					</div>
+				</p>
+				<p>
+					<div id="res2" class="res">
+						# Populations polymorphic:
+					</div>
+					<div id="val_neither_fixed" class="val">
+					</div>
+				</p>
+				<p>
+					<div id="res3" class="res">
+						# Populations fixed for allele A<sub>2</sub>:
+					</div>
+					<div id="val_A2_fixed" class="val">
+					</div>
+				</p>
+				<p>
+					<div id="res4" class="res">
+						Average time to fixation:
+					</div>
+					<div id="fixation_time" class="val">
+					</div>
 
-<script>
-var prop = {}; //properties of the chart
-prop.type = 'line';
-prop.options = {
-    scales: {
-        display: true,
-        yAxes: [{
-            scaleLabel: {
+					<div id="warn_fixTime" , class="warning tooltipleft">
+						Warning
+						<div class="tooltip_description" style="display:none" title="Warning">
+							Some populations remain polymorphic after the simulation. This will cause the average fixation time to be under-estimated.
+							<hr> To get a better estimate, run the simulation for more generations.
+							<hr> A good rule of thumb is to run the simulation for 10 times as many generations as the population size.
+						</div>
+					</div>
+					<!-- </div> -->
+				</p>
+		</div>
+		</form>
+	</div>
+
+		<!-- </div> -->
+		<!-- </div> -->
+		<!-- </div> -->
+
+		<script>
+			var prop = {}; //properties of the chart
+			prop.type = 'line';
+			prop.options = {
+				scales: {
+					display: true,
+					yAxes: [{
+						scaleLabel: {
 							display: true,
 							labelString: "Frequency of allele A1"
 						},
-            ticks: {
-                min: 0,
-                max: 1
-            }
-        }],
-        xAxes: [{
-					scaleLabel: {
-						display: true,
-						labelString: "Generations"
+						ticks: {
+							min: 0,
+							max: 1
+						}
+					}],
+					xAxes: [{
+						scaleLabel: {
+							display: true,
+							labelString: "Generations"
+						},
+						ticks: {
+							fontColor: 'black',
+							maxRotation: 0,
+							maxTicksLimit: 11
+						}
+					}]
+				},
+				elements: {
+					line: {
+						tension: 0
 					},
-					ticks: {
-						fontColor: 'black',
-						maxRotation: 0,
-						maxTicksLimit: 11
-					}
-				}]
-			},
-			elements: {
-				line: {
-					tension: 0
+					point: {
+						radius: 0
+					},
 				},
-				point: {
-					radius: 0
+				animation: {
+					duration: 0
 				},
-			},
-			animation:{
-        duration: 0
-    },
-    legend: {
-        display: false
-    },
-		maintainAspectRatio: false,
-		responsive: true
-};
-prop.data = {
-     labels: generateXAxis(0), // 0 is just a placeholder and will be overwritten
-     datasets: [],
-};
+				legend: {
+					display: false
+				},
+				maintainAspectRatio: false,
+				responsive: true
+			};
+			prop.data = {
+				labels: generateXAxis(0), // 0 is just a placeholder and will be overwritten
+				datasets: [],
+			};
 
 
-var ctx = document.getElementById("myCanvas");
-var ctx = $('#myCanvas').get(0).getContext("2d");
-var myChart = new Chart(ctx, prop);
+			var ctx = document.getElementById("myCanvas");
+			// var ctx = $('#myCanvas').get(0).getContext("2d");
+			var myChart = new Chart(ctx, prop);
 
-getValues();
-</script>
+			getValues();
+		</script>
 
+</body>
 
 </html>
