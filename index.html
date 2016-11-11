@@ -250,7 +250,7 @@
 				}
 				p[i] = selection(post_drift, fit_hom_p, fit_het, fit_hom_q);
 				if (p[i] !== 0 && p[i] !== 1) {
-					fixtime = i;
+					fixtime = i + 1;
 				}
 			}
 			return {
